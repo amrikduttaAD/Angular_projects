@@ -1,0 +1,118 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-8">
+              
+              <mat-stepper linear #stepper>
+                <mat-step [stepControl]="checkOutForm">
+                  <form class="row" [formGroup]="checkOutForm">
+
+                    <div class="row mb-2">
+                      <div class="col-6">
+                        <h3>Shipping address</h3>
+                      </div>
+                      <div class="col-6 d-flex flex-row-reverse">
+                        <button 
+                        [disabled]="checkOutForm.invalid"
+                        (click)="saveAddress()" 
+                        mat-button>Save as Default address</button>
+                      </div>
+                    </div>
+
+                    <ng-template matStepLabel>Fill out your address</ng-template>
+                    <mat-form-field class="col-6" appearance="fill">
+                      <mat-label>First Name</mat-label>
+                      <input matInput formControlName="firstName" placeholder="First name" required>
+                    </mat-form-field>
+                    <mat-form-field class="col-6" appearance="fill">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput formControlName="lastName" placeholder="Last name" required>
+                      </mat-form-field>
+                      <mat-form-field class="col-6" appearance="fill">
+                        <mat-label>Street</mat-label>
+                        <input matInput formControlName="street" placeholder="Street" required>
+                      </mat-form-field>
+                      <mat-form-field class="col-6" appearance="fill">
+                        <mat-label>City</mat-label>
+                        <input matInput formControlName="city" placeholder="City" required>
+                      </mat-form-field>
+                      <mat-form-field class="col-6" appearance="fill">
+                        <mat-label>State</mat-label>
+                        <input matInput formControlName="state" placeholder="State" required>
+                      </mat-form-field>
+                      <mat-form-field class="col-6" appearance="fill">
+                        <mat-label>Pin Code</mat-label>
+                        <input matInput formControlName="pinCode" placeholder="Pin Code" required>
+                      </mat-form-field>
+
+                    <div>
+                      <button [disabled]="checkOutForm.invalid" mat-button matStepperNext>Next</button>
+                    </div>
+                  </form>
+                </mat-step>
+
+                <mat-step [stepControl]="deliveryForm">
+                  <form [formGroup]="deliveryForm">
+                    <ng-template matStepLabel>Add Delivery Option</ng-template>
+
+                    <div class="mt-4">
+                      <h4 class="mb-3">Choose your delivery method</h4>
+                          <div class="col-6 form-group" *ngFor="let method of deliveryMethods">
+                              <input type="radio"
+                                  (click)="setShippingPrice(method)"
+                                  id={{method.id}}
+                                  value={{method.id}}
+                                  formControlName="deliveryMethod"
+                                  class="custom-control-input"
+                              >
+                              <label for="{{method.id}}" class="custom-control-label">
+                                  <strong>{{method.shortName}} - {{method.price | currency}}</strong>
+                                  <br />
+                                  <span class="label-description">{{method.description}}</span>
+                              </label>
+                          </div>
+                  </div>
+                  
+
+
+                    <div>
+                      <button mat-button matStepperPrevious>Back</button>
+                      <button [disabled]="checkOutForm.invalid" mat-button matStepperNext>Next</button>
+                    </div>
+                  </form>
+                </mat-step>
+
+                <mat-step>
+                  <ng-template matStepLabel>Review</ng-template>
+                  <app-basket-summary 
+                  *ngIf="basket"
+                  [isBasket]="false"
+                  [items]="basket.items"
+                  ></app-basket-summary>
+                  <div>
+                    <button mat-button matStepperPrevious>Back</button>
+                      <button mat-button matStepperNext>Next</button>
+                  </div>
+                </mat-step>
+
+                <mat-step>
+                  <ng-template matStepLabel>Payment</ng-template>
+                  <p>You are now done.</p>
+                  <button mat-button (click)="submitOrder()">Pay</button>
+                  <div>
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button (click)="stepper.reset()">Reset</button>
+                  </div>
+                </mat-step>
+
+              </mat-stepper>
+              
+        </div>
+        <div class="col-4">
+            <app-order-totals                            
+            *ngIf="basketTotal"
+            [shippingPrice]="basketTotal.shipping"
+            [subtotal]="basketTotal.subtotal"
+            [total]="basketTotal.total"></app-order-totals>
+        </div>
+    </div>
+</div>

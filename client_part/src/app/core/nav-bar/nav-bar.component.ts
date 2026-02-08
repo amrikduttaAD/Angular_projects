@@ -1,0 +1,34 @@
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AccountService } from 'src/app/account/account.service';
+import { BasketService } from 'src/app/basket/basket.service';
+import { IBasket } from 'src/app/shared/models/basket';
+import { IUser } from 'src/app/shared/models/user';
+
+@Component({
+  selector: 'app-nav-bar',
+  templateUrl: './nav-bar.component.html',
+  styleUrls: ['./nav-bar.component.scss']
+})
+export class NavBarComponent implements OnInit {
+  basket:IBasket
+  currentUser:IUser=null
+  //basket$: Observable<IBasket> // alternative method
+
+  constructor(private service:BasketService,private accountService:AccountService) { }
+
+  ngOnInit(): void {
+    //this.basket$=this.service.basket$ // this is also a method
+    this.service.basket$.subscribe(resp=>{
+      this.basket=resp
+    })
+    this.accountService.currentUser$.subscribe(resp=>{
+      this.currentUser=resp
+    })
+  }
+
+  logout(){
+    this.accountService.logout()
+  }
+
+}
