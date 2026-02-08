@@ -3,7 +3,7 @@ export const environment = {
   name: 'prod',
   firebase:{
     config:{
-        apiKey: 'AIzaSyBSHh8xcWitHLW_SATsqqZ0M-H5lxjYMeQ',
+        apiKey: '',
         authDomain: 'courseapp-1ccac.firebaseapp.com',
         projectId: 'courseapp-1ccac',
         storageBucket: 'courseapp-1ccac.appspot.com',
